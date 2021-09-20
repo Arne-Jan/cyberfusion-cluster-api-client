@@ -3,9 +3,12 @@
 namespace Vdhicts\Cyberfusion\ClusterApi\Support;
 
 use Vdhicts\Cyberfusion\ClusterApi\Contracts\Filter;
+use Vdhicts\HttpQueryBuilder\Builder;
 
 class ListFilter implements Filter
 {
+    private const MAX_LIMIT = 1000;
+
     private int $skip = 0;
     private int $limit = 100;
     private array $filter = [];
@@ -30,6 +33,9 @@ class ListFilter implements Filter
 
     public function setLimit(int $limit): ListFilter
     {
+        if ($limit > self::MAX_LIMIT) {
+            $limit = self::MAX_LIMIT;
+        }
         $this->limit = $limit;
 
         return $this;
@@ -67,5 +73,19 @@ class ListFilter implements Filter
             'filter' => $this->filter,
             'sort' => $this->sort,
         ];
+    }
+
+    public function toQuery(): string
+    {
+        $builder = (new Builder())
+            ->add('skip', $this->skip)
+            ->add('limit', $this->limit);
+        foreach ($this->filter as $filter) {
+            $builder->add('filter', $filter);
+        }
+        foreach ($this->sort as $sort) {
+            $builder->add('sort', $sort);
+        }
+        return $builder->build();
     }
 }

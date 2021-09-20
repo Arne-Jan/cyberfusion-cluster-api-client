@@ -10,10 +10,16 @@ class UnixUser extends ClusterModel implements Model
 {
     private string $username;
     private string $password;
+    private ?string $description = null;
     private ?string $defaultPhpVersion = null;
     private ?string $virtualHostsDirectory = null;
     private ?string $mailDomainsDirectory = null;
+    private ?string $borgRepositoriesDirectory = null;
     private string $shellPath = ShellPath::BASH;
+    private bool $asyncSupportEnabled = false;
+    private ?string $rabbitMqUsername = null;
+    private ?string $rabbitMqVirtualHostName = null;
+    private ?string $rabbitMqPassword = null;
     private int $clusterId;
     private ?int $id = null;
     private ?int $unixId = null;
@@ -45,6 +51,18 @@ class UnixUser extends ClusterModel implements Model
     public function setPassword(string $password): UnixUser
     {
         $this->password = $password;
+
+        return $this;
+    }
+
+    public function getDescription(): ?string
+    {
+        return $this->description;
+    }
+
+    public function setDescription(?string $description): UnixUser
+    {
+        $this->description = $description;
 
         return $this;
     }
@@ -85,6 +103,18 @@ class UnixUser extends ClusterModel implements Model
         return $this;
     }
 
+    public function getBorgRepositoriesDirectory(): ?string
+    {
+        return $this->borgRepositoriesDirectory;
+    }
+
+    public function setBorgRepositoriesDirectory(?string $borgRepositoriesDirectory): UnixUser
+    {
+        $this->borgRepositoriesDirectory = $borgRepositoriesDirectory;
+
+        return $this;
+    }
+
     public function getShellPath(): string
     {
         return $this->shellPath;
@@ -97,6 +127,54 @@ class UnixUser extends ClusterModel implements Model
         ]);
 
         $this->shellPath = $shellPath;
+
+        return $this;
+    }
+
+    public function isAsyncSupportEnabled(): bool
+    {
+        return $this->asyncSupportEnabled;
+    }
+
+    public function setAsyncSupportEnabled(bool $asyncSupportEnabled): UnixUser
+    {
+        $this->asyncSupportEnabled = $asyncSupportEnabled;
+
+        return $this;
+    }
+
+    public function getRabbitMqUsername(): ?string
+    {
+        return $this->rabbitMqUsername;
+    }
+
+    public function setRabbitMqUsername(?string $rabbitMqUsername): UnixUser
+    {
+        $this->rabbitMqUsername = $rabbitMqUsername;
+
+        return $this;
+    }
+
+    public function getRabbitMqVirtualHostName(): ?string
+    {
+        return $this->rabbitMqVirtualHostName;
+    }
+
+    public function setRabbitMqVirtualHostName(?string $rabbitMqVirtualHostName): UnixUser
+    {
+        $this->rabbitMqVirtualHostName = $rabbitMqVirtualHostName;
+
+        return $this;
+    }
+
+    public function getRabbitMqPassword(): ?string
+    {
+        return $this->rabbitMqPassword;
+    }
+
+    public function setRabbitMqPassword(?string $rabbitMqPassword): UnixUser
+    {
+        $this->rabbitMqPassword = $rabbitMqPassword;
 
         return $this;
     }
@@ -166,10 +244,16 @@ class UnixUser extends ClusterModel implements Model
         return $this
             ->setUsername(Arr::get($data, 'username'))
             ->setPassword(Arr::get($data, 'password'))
+            ->setDescription(Arr::get($data, 'description'))
             ->setDefaultPhpVersion(Arr::get($data, 'default_php_version'))
             ->setVirtualHostsDirectory(Arr::get($data, 'virtual_hosts_directory'))
             ->setMailDomainsDirectory(Arr::get($data, 'mail_domains_directory'))
+            ->setBorgRepositoriesDirectory(Arr::get($data, 'borg_repositories_directory'))
             ->setShellPath(Arr::get($data, 'shell_path', ShellPath::BASH))
+            ->setAsyncSupportEnabled(Arr::get($data, 'async_support_enabled', false))
+            ->setRabbitMqUsername(Arr::get($data, 'rabbitmq_username'))
+            ->setRabbitMqVirtualHostName(Arr::get($data, 'rabbitmq_virtual_host_name'))
+            ->setRabbitMqPassword(Arr::get($data, 'rabbitmq_password'))
             ->setUnixId(Arr::get($data, 'unix_id'))
             ->setId(Arr::get($data, 'id'))
             ->setClusterId(Arr::get($data, 'cluster_id'))
@@ -182,10 +266,16 @@ class UnixUser extends ClusterModel implements Model
         return [
             'username' => $this->getUsername(),
             'password' => $this->getPassword(),
+            'description' => $this->getDescription(),
             'default_php_version' => $this->getDefaultPhpVersion(),
             'virtual_hosts_directory' => $this->getVirtualHostsDirectory(),
             'mail_domains_directory' => $this->getMailDomainsDirectory(),
+            'borg_repositories_directory' => $this->getBorgRepositoriesDirectory(),
             'shell_path' => $this->getShellPath(),
+            'async_support_enabled' => $this->isAsyncSupportEnabled(),
+            'rabbitmq_username' => $this->getRabbitMqUsername(),
+            'rabbitmq_virtual_host_name' => $this->getRabbitMqVirtualHostName(),
+            'rabbitmq_password' => $this->getRabbitMqPassword(),
             'cluster_id' => $this->getClusterId(),
             'id' => $this->getId(),
             'unix_id' => $this->getUnixId(),

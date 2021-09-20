@@ -23,7 +23,7 @@ class Certificates extends Endpoint
 
         $request = (new Request())
             ->setMethod(Request::METHOD_GET)
-            ->setUrl(sprintf('certificates?%s', http_build_query($filter->toArray())));
+            ->setUrl(sprintf('certificates?%s', $filter->toQuery()));
 
         $response = $this
             ->client
@@ -118,12 +118,13 @@ class Certificates extends Endpoint
      */
     public function update(Certificate $certificate): Response
     {
-        $this->validateRequired($certificate, 'update', ['id', 'cluster_id']);
+        $this->validateRequired($certificate, 'update', ['id', 'cluster_id', 'main_common_name']);
 
         $request = (new Request())
             ->setMethod(Request::METHOD_PATCH)
             ->setUrl(sprintf('certificates/%d', $certificate->getId()))
             ->setBody($this->filterFields($certificate->toArray(), [
+                'main_common_name',
                 'common_names',
                 'certificate',
                 'ca_chain',

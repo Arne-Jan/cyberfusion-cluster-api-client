@@ -17,9 +17,9 @@ class Cluster extends ClusterModel implements Model
     private ?string $customerId = null;
     private ?bool $wordpressToolkitEnabled = null;
     private ?bool $databaseToolkitEnabled = null;
-    private ?bool $commandToolkitEnabled = null;
     private ?bool $malwareToolkitEnabled = null;
     private ?bool $malwareToolkitScansEnabled = null;
+    private ?bool $bubblewrapToolkitEnabled = null;
     private ?int $id = null;
     private ?string $createdAt = null;
     private ?string $updatedAt = null;
@@ -144,18 +144,6 @@ class Cluster extends ClusterModel implements Model
         return $this;
     }
 
-    public function isCommandToolkitEnabled(): ?bool
-    {
-        return $this->commandToolkitEnabled;
-    }
-
-    public function setCommandToolkitEnabled(?bool $commandToolkitEnabled): Cluster
-    {
-        $this->commandToolkitEnabled = $commandToolkitEnabled;
-
-        return $this;
-    }
-
     public function istMalwareToolkitEnabled(): ?bool
     {
         return $this->malwareToolkitEnabled;
@@ -176,6 +164,18 @@ class Cluster extends ClusterModel implements Model
     public function setMalwareToolkitScansEnabled(?bool $malwareToolkitScansEnabled): Cluster
     {
         $this->malwareToolkitScansEnabled = $malwareToolkitScansEnabled;
+
+        return $this;
+    }
+
+    public function isBubblewrapToolkitEnabled(): ?bool
+    {
+        return $this->bubblewrapToolkitEnabled;
+    }
+
+    public function setBubblewrapToolkitEnabled(?bool $bubblewrapToolkitEnabled): Cluster
+    {
+        $this->bubblewrapToolkitEnabled = $bubblewrapToolkitEnabled;
 
         return $this;
     }
@@ -229,9 +229,9 @@ class Cluster extends ClusterModel implements Model
             ->setCustomerId(Arr::get($data, 'customer_id'))
             ->setWordpressToolkitEnabled(Arr::get($data, 'wordpress_toolkit_enabled'))
             ->setDatabaseToolkitEnabled(Arr::get($data, 'database_toolkit_enabled'))
-            ->setCommandToolkitEnabled(Arr::get($data, 'command_toolkit_enabled'))
             ->setMalwareToolkitEnabled(Arr::get($data, 'malware_toolkit_enabled'))
             ->setMalwareToolkitScansEnabled(Arr::get($data, 'malware_toolkit_scans_enabled'))
+            ->setBubblewrapToolkitEnabled(Arr::get($data, 'bubblewrap_toolkit_enabled'))
             ->setId(Arr::get($data, 'id'))
             ->setCreatedAt(Arr::get($data, 'created_at'))
             ->setUpdatedAt(Arr::get($data, 'updated_at'));
@@ -250,9 +250,9 @@ class Cluster extends ClusterModel implements Model
             'customer_id' => $this->getCustomerId(),
             'wordpress_toolkit_enabled' => $this->isWordpressToolkitEnabled(),
             'database_toolkit_enabled' => $this->isDatabaseToolkitEnabled(),
-            'command_toolkit_enabled' => $this->isCommandToolkitEnabled(),
             'malware_toolkit_enabled' => $this->istMalwareToolkitEnabled(),
             'malware_toolkit_scans_enabled' => $this->isMalwareToolkitScansEnabled(),
+            'bubblewrap_toolkit_enabled ' => $this->isBubblewrapToolkitEnabled(),
             'id' => $this->getId(),
             'created_at' => $this->getCreatedAt(),
             'updated_at' => $this->getUpdatedAt(),
